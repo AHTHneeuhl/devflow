@@ -23,11 +23,11 @@ model User {
 }
 
 model Organization {
-  id String @id @default(uuid())
-  name String
+  id    String @id @default(uuid())
+  name  String
 
-  members UserOrganization[]
-  projects Project[]
+  members   UserOrganization[]
+  projects  Project[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -35,11 +35,12 @@ model Organization {
 }
 
 model Project {
-  id String @id @default(uuid())
-  name String
+  id    String @id @default(uuid())
+  name  String
   orgId String
 
   organization Organization @relation(fields: [orgId], references: [id])
+  tasks        Task[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -47,18 +48,31 @@ model Project {
 }
 
 model UserOrganization {
-  id String @id @default(uuid())
+  id      String @id @default(uuid())
 
-  userId String
-  orgId String
-  role Role
+  userId  String
+  orgId   String
+  role    Role
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  org Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  user  User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  org   Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
 
   @@unique([userId, orgId])
+}
+
+model Task {
+  id        String   @id @default(uuid())
+  title     String
+  description String?
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
 }
 
 enum Role {
