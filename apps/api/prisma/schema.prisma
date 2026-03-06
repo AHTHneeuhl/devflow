@@ -27,6 +27,19 @@ model Organization {
   name String
 
   members UserOrganization[]
+  projects Project[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+}
+
+model Project {
+  id String @id @default(uuid())
+  name String
+  orgId String
+
+  organization Organization @relation(fields: [orgId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -46,24 +59,6 @@ model UserOrganization {
   createdAt DateTime @default(now())
 
   @@unique([userId, orgId])
-}
-
-model Workspace {
-  id   String @id @default(uuid())
-  name String
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Workflow {
-  id          String  @id @default(uuid())
-  name        String
-  workspaceId String
-  enabled     Boolean @default(true)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }
 
 enum Role {
