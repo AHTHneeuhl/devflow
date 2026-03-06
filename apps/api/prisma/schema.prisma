@@ -13,24 +13,27 @@ model User {
   name     String?
   password String?
 
+  tasks    Task[]
+  comments Comment[]
+
   memberships UserOrganization[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
   @@index([email])
 }
 
 model Organization {
-  id    String @id @default(uuid())
-  name  String
+  id   String @id @default(uuid())
+  name String
 
-  members   UserOrganization[]
-  projects  Project[]
+  members  UserOrganization[]
+  projects Project[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 }
 
@@ -42,20 +45,20 @@ model Project {
   organization Organization @relation(fields: [orgId], references: [id])
   tasks        Task[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 }
 
 model UserOrganization {
-  id      String @id @default(uuid())
+  id String @id @default(uuid())
 
-  userId  String
-  orgId   String
-  role    Role
+  userId String
+  orgId  String
+  role   Role
 
-  user  User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  org   Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  user User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  org  Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
 
@@ -63,15 +66,38 @@ model UserOrganization {
 }
 
 model Task {
-  id        String   @id @default(uuid())
-  title     String
+  id          String  @id @default(uuid())
+  title       String
   description String?
+
+  status   TaskStatus   @default(TODO)
+  priority TaskPriority @default(MEDIUM)
+
+  comments  Comment[]
 
   projectId String
   project   Project @relation(fields: [projectId], references: [id])
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  assigneeId String?
+  assignee   User?   @relation(fields: [assigneeId], references: [id])
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}
+
+model Comment {
+  id      String @id @default(uuid())
+  content String
+
+  taskId String
+  task   Task   @relation(fields: [taskId], references: [id])
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 }
 
@@ -80,4 +106,16 @@ enum Role {
   MANAGER
   MEMBER
   VIEWER
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  DONE
+}
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
 }
