@@ -13,8 +13,39 @@ model User {
   name     String?
   password String?
 
+  memberships UserOrganization[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+
+  @@index([email])
+}
+
+model Organization {
+  id String @id @default(uuid())
+  name String
+
+  members UserOrganization[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+}
+
+model UserOrganization {
+  id String @id @default(uuid())
+
+  userId String
+  orgId String
+  role Role
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  org Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, orgId])
 }
 
 model Workspace {
@@ -33,4 +64,11 @@ model Workflow {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+enum Role {
+  ADMIN
+  MANAGER
+  MEMBER
+  VIEWER
 }
