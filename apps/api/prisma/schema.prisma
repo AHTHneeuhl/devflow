@@ -16,6 +16,7 @@ model User {
   tasks    Task[]
   comments Comment[]
   activityLogs ActivityLog[]
+  notifications Notification[]
 
   memberships UserOrganization[]
 
@@ -131,6 +132,20 @@ model OrganizationSettings {
 
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
+}
+
+model Notification {
+  id      String @id @default(uuid())
+
+  title   String
+  message String
+
+  userId  String
+  user    User @relation(fields: [userId], references: [id])
+
+  read    Boolean @default(false)
+
+  createdAt DateTime @default(now())
 }
 
 enum Role {
