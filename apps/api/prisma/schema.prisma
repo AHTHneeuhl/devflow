@@ -53,6 +53,8 @@ model Project {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
+
+  @@index([orgId])
 }
 
 model UserOrganization {
@@ -89,6 +91,10 @@ model Task {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
+
+  @@index([projectId])
+  @@index([assigneeId])
+  @@index([status])
 }
 
 model Comment {
@@ -104,6 +110,9 @@ model Comment {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
+
+  @@index([taskId])
+  @@index([userId])
 }
 
 model ActivityLog {
@@ -120,6 +129,9 @@ model ActivityLog {
   project   Project? @relation(fields: [projectId], references: [id])
 
   createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([projectId])
 }
 
 model OrganizationSettings {
@@ -147,6 +159,9 @@ model Notification {
   read    Boolean @default(false)
 
   createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([read])
 }
 
 model Subscription {
