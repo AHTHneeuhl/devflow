@@ -14,4 +14,11 @@ export class ProjectsService {
       },
     });
   }
+
+  async findAll(orgId: string) {
+    return this.prisma.project.findMany({
+      where: { orgId },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
 }
