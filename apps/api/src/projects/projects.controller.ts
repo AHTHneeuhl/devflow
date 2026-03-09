@@ -1,8 +1,17 @@
-import { Body, Controller, Post, Param, UseGuards, Get } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  Param,
+  UseGuards,
+  Get,
+  Patch,
+} from '@nestjs/common';
 import { ProjectsService } from './projects.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { OrgAccessGuard } from '../common/guards/org-access.guard';
+import { UpdateProjectDto } from './dto/update-project.dto';
 
 @Controller('org/:orgId/projects')
 export class ProjectsController {
@@ -27,5 +36,15 @@ export class ProjectsController {
     @Param('projectId') projectId: string,
   ) {
     return this.projectsService.findOne(orgId, projectId);
+  }
+
+  @UseGuards(JwtAuthGuard, OrgAccessGuard)
+  @Patch(':projectId')
+  update(
+    @Param('orgId') orgId: string,
+    @Param('projectId') projectId: string,
+    @Body() dto: UpdateProjectDto,
+  ) {
+    return this.projectsService.update(orgId, projectId, dto);
   }
 }
