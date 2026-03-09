@@ -20,4 +20,18 @@ export class ActivityLogsService {
       },
     });
   }
+
+  async getProjectActivity(projectId: string) {
+    return this.prisma.activityLog.findMany({
+      where: {
+        projectId,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      include: {
+        user: true,
+      },
+    });
+  }
 }
