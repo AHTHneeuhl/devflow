@@ -59,11 +59,18 @@ export class TasksService {
     return task;
   }
 
-  async delete(taskId: string) {
-    return this.prisma.task.delete({
-      where: {
-        id: taskId,
-      },
+  async delete(taskId: string, userId: string) {
+    const task = await this.prisma.task.delete({
+      where: { id: taskId },
     });
+
+    await this.activityLogsService.logActivity(
+      userId,
+      'TASK_DELETED',
+      'task',
+      task.id,
+    );
+
+    return task;
   }
 }
