@@ -43,11 +43,20 @@ export class TasksService {
     });
   }
 
-  async update(taskId: string, dto: UpdateTaskDto) {
-    return this.prisma.task.update({
+  async update(taskId: string, userId: string, dto: UpdateTaskDto) {
+    const task = await this.prisma.task.update({
       where: { id: taskId },
       data: dto,
     });
+
+    await this.activityLogsService.logActivity(
+      userId,
+      'TASK_UPDATED',
+      'task',
+      task.id,
+    );
+
+    return task;
   }
 
   async delete(taskId: string) {
