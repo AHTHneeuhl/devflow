@@ -20,6 +20,9 @@ export class TasksService {
         priority: dto.priority,
         projectId,
       },
+      include: {
+        assignee: true,
+      },
     });
 
     await this.activityLogsService.logActivity(
@@ -37,6 +40,10 @@ export class TasksService {
     return this.prisma.task.findMany({
       where: {
         projectId,
+        deletedAt: null,
+      },
+      include: {
+        assignee: true,
       },
       orderBy: {
         createdAt: 'desc',
@@ -48,6 +55,9 @@ export class TasksService {
     const task = await this.prisma.task.update({
       where: { id: taskId },
       data: dto,
+      include: {
+        assignee: true,
+      },
     });
 
     await this.activityLogsService.logActivity(
