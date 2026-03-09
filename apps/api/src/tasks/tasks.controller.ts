@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -33,5 +34,11 @@ export class TasksController {
   @Patch(':taskId')
   update(@Param('taskId') taskId: string, @Body() dto: UpdateTaskDto) {
     return this.tasksService.update(taskId, dto);
+  }
+
+  @UseGuards(JwtAuthGuard, OrgAccessGuard)
+  @Delete(':taskId')
+  remove(@Param('taskId') taskId: string) {
+    return this.tasksService.delete(taskId);
   }
 }
