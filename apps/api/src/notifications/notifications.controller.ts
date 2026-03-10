@@ -14,4 +14,9 @@ export class NotificationsController {
   markAsRead(@Param('notificationId') notificationId: string) {
     return this.notificationsService.markAsRead(notificationId);
   }
+
+  @Get('/users/:userId/notifications/unread-count')
+  getUnreadCount(@Param('userId') userId: string) {
+    return this.notificationsService.getUnreadCount(userId);
+  }
 }

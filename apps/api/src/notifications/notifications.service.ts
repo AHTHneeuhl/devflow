@@ -34,4 +34,13 @@ export class NotificationsService {
       },
     });
   }
+
+  async getUnreadCount(userId: string) {
+    return this.prisma.notification.count({
+      where: {
+        userId,
+        read: false,
+      },
+    });
+  }
 }

@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ActivityLogsService } from 'src/activity-logs/activity-logs.service';
+import { NotificationsService } from 'src/notifications/notifications.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
@@ -9,6 +10,7 @@ export class TasksService {
   constructor(
     private prisma: PrismaService,
     private activityLogsService: ActivityLogsService,
+    private notificationsService: NotificationsService,
   ) {}
 
   async create(projectId: string, userId: string, dto: CreateTaskDto) {
@@ -97,6 +99,14 @@ export class TasksService {
         assignee: true,
       },
     });
+
+    if (assigneeId) {
+      await this.notificationsService.createNotification(
+        assigneeId,
+        'Task Assigned',
+        `You were assigned to task: ${task.title}`,
+      );
+    }
 
     await this.activityLogsService.logActivity(
       userId,

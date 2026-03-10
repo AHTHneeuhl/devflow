@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ActivityLogsService } from 'src/activity-logs/activity-logs.service';
+import { NotificationsService } from 'src/notifications/notifications.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 
@@ -8,6 +9,7 @@ export class CommentsService {
   constructor(
     private prisma: PrismaService,
     private activityLogsService: ActivityLogsService,
+    private notificationsService: NotificationsService,
   ) {}
 
   async createComment(taskId: string, userId: string, dto: CreateCommentDto) {
@@ -30,6 +32,15 @@ export class CommentsService {
       comment.id,
       comment.task.projectId,
     );
+
+    // 🔔 Notify task assignee
+    if (comment.task.assigneeId && comment.task.assigneeId !== userId) {
+      await this.notificationsService.createNotification(
+        comment.task.assigneeId,
+        'New Comment',
+        `${comment.user.name || comment.user.email} commented on task "${comment.task.title}"`,
+      );
+    }
 
     return comment;
   }
