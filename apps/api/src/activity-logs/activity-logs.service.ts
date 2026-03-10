@@ -12,6 +12,8 @@ export class ActivityLogsService {
       TASK_DELETED: 'deleted a task',
       PROJECT_CREATED: 'created a project',
       PROJECT_UPDATED: 'updated a project',
+      TASK_ASSIGNED: 'assigned a task',
+      TASK_UNASSIGNED: 'unassigned a task',
       COMMENT_CREATED: 'commented on a task',
     };
 
