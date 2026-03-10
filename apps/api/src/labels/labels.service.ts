@@ -14,4 +14,15 @@ export class LabelsService {
       },
     });
   }
+
+  async getProjectLabels(projectId: string) {
+    return this.prisma.label.findMany({
+      where: {
+        projectId,
+      },
+      orderBy: {
+        createdAt: 'asc',
+      },
+    });
+  }
 }
