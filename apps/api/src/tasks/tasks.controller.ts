@@ -57,4 +57,9 @@ export class TasksController {
     const userId = 'USER_ID'; // replace with auth later
     return this.tasksService.unassignTask(taskId, userId);
   }
+
+  @Patch(':taskId/labels/:labelId')
+  addLabel(@Param('taskId') taskId: string, @Param('labelId') labelId: string) {
+    return this.tasksService.addLabel(taskId, labelId);
+  }
 }

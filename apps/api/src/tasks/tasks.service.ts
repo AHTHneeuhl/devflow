@@ -127,4 +127,18 @@ export class TasksService {
 
     return task;
   }
+
+  async addLabel(taskId: string, labelId: string) {
+    return this.prisma.task.update({
+      where: { id: taskId },
+      data: {
+        labels: {
+          connect: { id: labelId },
+        },
+      },
+      include: {
+        labels: true,
+      },
+    });
+  }
 }
