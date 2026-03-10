@@ -141,4 +141,25 @@ export class TasksService {
       },
     });
   }
+
+  async getTasks(projectId: string, labelId?: string) {
+    return this.prisma.task.findMany({
+      where: {
+        projectId,
+        deletedAt: null,
+        ...(labelId && {
+          labels: {
+            some: { id: labelId },
+          },
+        }),
+      },
+      include: {
+        assignee: true,
+        labels: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+  }
 }

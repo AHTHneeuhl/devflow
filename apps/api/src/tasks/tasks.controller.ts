@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -61,5 +62,13 @@ export class TasksController {
   @Patch(':taskId/labels/:labelId')
   addLabel(@Param('taskId') taskId: string, @Param('labelId') labelId: string) {
     return this.tasksService.addLabel(taskId, labelId);
+  }
+
+  @Get()
+  getTasks(
+    @Param('projectId') projectId: string,
+    @Query('labelId') labelId?: string,
+  ) {
+    return this.tasksService.getTasks(projectId, labelId);
   }
 }
