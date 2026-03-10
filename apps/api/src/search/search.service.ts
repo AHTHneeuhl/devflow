@@ -32,4 +32,40 @@ export class SearchService {
       },
     });
   }
+
+  async searchTasks(orgId: string, query: string, page: number, limit: number) {
+    const skip = (page - 1) * limit;
+
+    return this.prisma.task.findMany({
+      where: {
+        deletedAt: null,
+        project: {
+          orgId,
+        },
+        OR: [
+          {
+            title: {
+              contains: query,
+              mode: 'insensitive',
+            },
+          },
+          {
+            description: {
+              contains: query,
+              mode: 'insensitive',
+            },
+          },
+        ],
+      },
+      include: {
+        project: true,
+        assignee: true,
+      },
+      skip,
+      take: limit,
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+  }
 }

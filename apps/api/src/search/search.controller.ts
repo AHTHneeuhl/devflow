@@ -15,4 +15,14 @@ export class SearchController {
       dto.limit ?? 10,
     );
   }
+
+  @Get('/tasks')
+  searchTasks(@Query() dto: SearchDto, @Query('orgId') orgId: string) {
+    return this.searchService.searchTasks(
+      orgId,
+      dto.query,
+      dto.page ?? 1,
+      dto.limit ?? 10,
+    );
+  }
 }
