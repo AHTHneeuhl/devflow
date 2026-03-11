@@ -24,11 +24,20 @@ export function OrgSwitcher() {
       .then((data) => setOrgs(data.data));
   }, []);
 
+  useEffect(() => {
+    const stored = localStorage.getItem('orgId');
+    if (stored) setSelectedOrg(stored);
+  }, []);
+
   return (
     <select
-      value={selectedOrg}
-      onChange={(e) => setSelectedOrg(e.target.value)}
       className="border rounded-md px-3 py-2 w-[200px]"
+      value={selectedOrg}
+      onChange={(e) => {
+        const id = e.target.value;
+        setSelectedOrg(id);
+        localStorage.setItem('orgId', id);
+      }}
     >
       <option>Select Workspace</option>
 
