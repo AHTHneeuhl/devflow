@@ -2,6 +2,7 @@
 
 import { getSocket } from '@/lib/ws-client';
 import { useRealtimeStore } from '@/store/realtime-store';
+import { useTaskStore } from '@/store/task-store';
 import { useEffect } from 'react';
 import { NotificationBell } from '../components/notifications/notification-bell';
 import { SearchInput } from '../components/search/search-input';
@@ -12,6 +13,8 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const setConnected = useRealtimeStore((s) => s.setConnected);
+  const addTask = useTaskStore((s) => s.addTask);
+  const updateTask = useTaskStore((s) => s.updateTask);
 
   useEffect(() => {
     const socket = getSocket();
@@ -28,11 +31,11 @@ export default function DashboardLayout({
       const data = JSON.parse(event.data);
 
       if (data.type === 'task_created') {
-        console.log('Task created:', data.payload);
+        addTask(data.payload);
       }
 
       if (data.type === 'task_updated') {
-        console.log('Task updated:', data.payload);
+        updateTask(data.payload);
       }
     };
   }, [setConnected]);
