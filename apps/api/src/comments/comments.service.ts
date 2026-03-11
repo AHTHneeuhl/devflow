@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ActivityLogsService } from 'src/activity-logs/activity-logs.service';
 import { NotificationsService } from 'src/notifications/notifications.service';
+import { RealtimeGateway } from 'src/realtime/realtime.gateway';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 
@@ -10,6 +11,7 @@ export class CommentsService {
     private prisma: PrismaService,
     private activityLogsService: ActivityLogsService,
     private notificationsService: NotificationsService,
+    private realtimeGateway: RealtimeGateway,
   ) {}
 
   async createComment(taskId: string, userId: string, dto: CreateCommentDto) {
@@ -41,6 +43,8 @@ export class CommentsService {
         `${comment.user.name || comment.user.email} commented on task "${comment.task.title}"`,
       );
     }
+
+    this.realtimeGateway.emit('comment.created', comment);
 
     return comment;
   }
