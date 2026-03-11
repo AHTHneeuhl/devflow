@@ -25,6 +25,7 @@ export default function ProjectDetailsPage() {
   const [project, setProject] = useState<Project | null>(null);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [openTaskModal, setOpenTaskModal] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   const { orgId } = useOrgStore();
 
@@ -77,10 +78,16 @@ export default function ProjectDetailsPage() {
         >
           Add Task
         </button>
-        <TasksBoard tasks={tasks} />
+        <TasksBoard key={refreshKey} tasks={tasks} />
 
         {openTaskModal && (
-          <CreateTaskModal onClose={() => setOpenTaskModal(false)} />
+          <CreateTaskModal
+            onClose={() => setOpenTaskModal(false)}
+            onCreated={() => {
+              setOpenTaskModal(false);
+              setRefreshKey((k) => k + 1);
+            }}
+          />
         )}
       </div>
     </div>
