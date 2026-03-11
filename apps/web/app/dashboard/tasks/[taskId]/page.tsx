@@ -63,6 +63,15 @@ export default function TaskDetailsPage() {
     <div className="p-6">
       <h1 className="text-2xl font-semibold">{task.title}</h1>
       <p className="text-gray-500 mt-2">{task.description}</p>
+      <div className="mt-6">
+        <label className="block text-sm font-medium mb-2">Assignee</label>
+
+        <select className="border rounded px-3 py-2">
+          <option>Unassigned</option>
+          <option>User 1</option>
+          <option>User 2</option>
+        </select>
+      </div>
       <div className="mt-8">
         <h2 className="text-xl font-semibold mb-4">Comments</h2>
 
