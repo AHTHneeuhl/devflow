@@ -21,9 +21,13 @@ export function TasksBoard({ tasks }: { tasks: Task[] }) {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <div className="grid grid-cols-3 gap-4">
-        <TaskColumn title="Todo" tasks={todo} />
-        <TaskColumn title="In Progress" tasks={inProgress} />
-        <TaskColumn title="Done" tasks={done} />
+        <TaskColumn title="Todo" tasks={todo} droppableId="todo" />
+        <TaskColumn
+          title="In Progress"
+          tasks={inProgress}
+          droppableId="in_progress"
+        />
+        <TaskColumn title="Done" tasks={done} droppableId="done" />
       </div>
     </DragDropContext>
   );
