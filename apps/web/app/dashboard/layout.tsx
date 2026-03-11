@@ -1,4 +1,5 @@
-import { NotificationBell } from '@/app/components/notifications/notification-bell';
+import { NotificationBell } from '../components/notifications/notification-bell';
+import { SearchInput } from '../components/search/search-input';
 
 export default function DashboardLayout({
   children,
@@ -11,6 +12,7 @@ export default function DashboardLayout({
         <h1 className="font-semibold">DevFlow</h1>
 
         <div className="flex items-center gap-4">
+          <SearchInput />
           <NotificationBell />
         </div>
       </header>
