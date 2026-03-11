@@ -1,42 +1,78 @@
+'use client';
+
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+
 type AuthFormProps = {
   type: 'login' | 'register';
 };
 
+const schema = z.object({
+  name: z.string().optional(),
+  email: z.email(),
+  password: z.string().min(6),
+});
+
+type FormData = z.infer<typeof schema>;
+
 export function AuthForm({ type }: AuthFormProps) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: zodResolver(schema),
+  });
+
+  const onSubmit = (data: FormData) => {
+    console.log(data);
+  };
+
   return (
     <div className="w-full max-w-md rounded-lg bg-white p-6 shadow">
       <h1 className="mb-6 text-2xl font-semibold">
         {type === 'login' ? 'Login' : 'Create account'}
       </h1>
 
-      <form className="space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {type === 'register' && (
           <div>
             <label className="block text-sm mb-1">Name</label>
             <input
-              type="text"
+              {...register('name')}
               className="w-full rounded border px-3 py-2"
-              placeholder="Your name"
             />
+            {errors.name && (
+              <p className="text-sm text-red-500">Name is required</p>
+            )}
           </div>
         )}
 
         <div>
           <label className="block text-sm mb-1">Email</label>
           <input
+            {...register('email')}
             type="email"
             className="w-full rounded border px-3 py-2"
-            placeholder="you@example.com"
           />
+          {errors.email && (
+            <p className="text-sm text-red-500">Invalid email</p>
+          )}
         </div>
 
         <div>
           <label className="block text-sm mb-1">Password</label>
           <input
+            {...register('password')}
             type="password"
             className="w-full rounded border px-3 py-2"
-            placeholder="••••••••"
           />
+          {errors.password && (
+            <p className="text-sm text-red-500">
+              Password must be at least 6 characters
+            </p>
+          )}
         </div>
 
         <button
