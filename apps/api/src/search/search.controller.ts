@@ -35,4 +35,14 @@ export class SearchController {
       dto.limit ?? 10,
     );
   }
+
+  @Get()
+  globalSearch(@Query() dto: SearchDto, @Query('orgId') orgId: string) {
+    return this.searchService.globalSearch(
+      orgId,
+      dto.query,
+      dto.page ?? 1,
+      dto.limit ?? 10,
+    );
+  }
 }

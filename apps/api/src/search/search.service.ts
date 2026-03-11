@@ -101,4 +101,23 @@ export class SearchService {
       },
     });
   }
+
+  async globalSearch(
+    orgId: string,
+    query: string,
+    page: number,
+    limit: number,
+  ) {
+    const [projects, tasks, comments] = await Promise.all([
+      this.searchProjects(orgId, query, page, limit),
+      this.searchTasks(orgId, query, page, limit),
+      this.searchComments(orgId, query, page, limit),
+    ]);
+
+    return {
+      projects,
+      tasks,
+      comments,
+    };
+  }
 }
