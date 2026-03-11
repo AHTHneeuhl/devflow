@@ -1,6 +1,7 @@
 'use client';
 
 import { useNotificationStore } from '@/store/notification-store';
+import { NotificationItem } from './notification-item';
 
 export function NotificationDropdown() {
   const notifications = useNotificationStore((s) => s.notifications);
@@ -13,11 +14,11 @@ export function NotificationDropdown() {
         {notifications.length === 0 ? (
           <p className="p-4 text-sm text-gray-500">No notifications</p>
         ) : (
-          notifications.map((n) => (
-            <div key={n.id} className="p-3 border-b text-sm hover:bg-gray-50">
-              <p className="font-medium">{n.title}</p>
-              <p className="text-gray-500">{n.message}</p>
-            </div>
+          notifications.map((notification) => (
+            <NotificationItem
+              key={notification.id}
+              notification={notification}
+            />
           ))
         )}
       </div>
