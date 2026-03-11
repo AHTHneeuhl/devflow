@@ -1,15 +1,25 @@
 'use client';
 
 import { Notification } from '@/types/notification';
+import { useNotificationStore } from '@/store/notification-store';
 
 interface Props {
   notification: Notification;
 }
 
 export function NotificationItem({ notification }: Props) {
+  const markAsRead = useNotificationStore((s) => s.markAsRead);
+
+  function handleClick() {
+    if (!notification.isRead) {
+      markAsRead(notification.id);
+    }
+  }
+
   return (
     <div
-      className={`p-3 border-b text-sm hover:bg-gray-50 ${
+      onClick={handleClick}
+      className={`p-3 border-b text-sm hover:bg-gray-50 cursor-pointer ${
         !notification.isRead ? 'bg-gray-50' : ''
       }`}
     >
