@@ -3,7 +3,9 @@
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
 
+import { useAuth } from '@/context/auth-context';
 import { API_URL } from '@/lib/api';
 
 type AuthFormProps = {
@@ -19,6 +21,8 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 export function AuthForm({ type }: AuthFormProps) {
+  const router = useRouter();
+  const { login } = useAuth();
   const {
     register,
     handleSubmit,
@@ -32,16 +36,15 @@ export function AuthForm({ type }: AuthFormProps) {
 
     const res = await fetch(`${API_URL}/${endpoint}`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     });
 
     const result = await res.json();
 
     if (result.accessToken) {
-      localStorage.setItem('token', result.accessToken);
+      login(result.accessToken); // store token
+      router.push('/dashboard'); // redirect
     }
   };
 
