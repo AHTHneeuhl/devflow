@@ -39,7 +39,10 @@ export function AuthForm({ type }: AuthFormProps) {
     });
 
     const result = await res.json();
-    console.log(result);
+
+    if (result.accessToken) {
+      localStorage.setItem('token', result.accessToken);
+    }
   };
 
   return (
