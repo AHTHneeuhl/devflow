@@ -10,7 +10,7 @@ export function CreateProjectModal({
   onClose: () => void;
   onCreated: () => void;
 }) {
-  const orgId = localStorage.getItem('orgId');
+  const { orgId } = useOrgStore();
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const { token } = useAuthStore();

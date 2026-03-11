@@ -3,12 +3,13 @@
 import { useState } from 'react';
 import { useAuthStore } from '@/store/auth-store';
 import { useParams } from 'next/navigation';
+import { useOrgStore } from '@/store/org-store';
 
 export function CreateTaskModal({ onClose }: { onClose: () => void }) {
   const [title, setTitle] = useState('');
   const { token } = useAuthStore();
   const { projectId } = useParams();
-  const orgId = localStorage.getItem('orgId');
+  const { orgId } = useOrgStore();
 
   async function createTask() {
     await fetch(

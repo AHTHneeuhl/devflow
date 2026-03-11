@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { ProjectCard } from './project-card';
 import { useAuthStore } from '@/store/auth-store';
+import { useOrgStore } from '@/store/org-store';
 
 type Project = {
   id: string;
@@ -13,7 +14,7 @@ type Project = {
 export function ProjectsGrid({ refreshKey }: { refreshKey: number }) {
   const { token } = useAuthStore();
   const [projects, setProjects] = useState<Project[]>([]);
-  const orgId = localStorage.getItem('orgId');
+  const { orgId } = useOrgStore();
 
   async function loadProjects() {
     const res = await fetch(`http://localhost:4000/org/${orgId}/projects`, {

@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import { useAuthStore } from '@/store/auth-store';
 import { TasksBoard } from '@/app/components/tasks/tasks-board';
 import { CreateTaskModal } from '@/app/components/tasks/create-task-modal';
+import { useOrgStore } from '@/store/org-store';
 
 type Project = {
   id: string;
@@ -25,7 +26,7 @@ export default function ProjectDetailsPage() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [openTaskModal, setOpenTaskModal] = useState(false);
 
-  const orgId = localStorage.getItem('orgId');
+  const { orgId } = useOrgStore();
 
   useEffect(() => {
     async function loadProject() {
