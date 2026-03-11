@@ -4,6 +4,8 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
+import { API_URL } from '@/lib/api';
+
 type AuthFormProps = {
   type: 'login' | 'register';
 };
@@ -25,8 +27,19 @@ export function AuthForm({ type }: AuthFormProps) {
     resolver: zodResolver(schema),
   });
 
-  const onSubmit = (data: FormData) => {
-    console.log(data);
+  const onSubmit = async (data: FormData) => {
+    const endpoint = type === 'login' ? 'auth/login' : 'auth/register';
+
+    const res = await fetch(`${API_URL}/${endpoint}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    const result = await res.json();
+    console.log(result);
   };
 
   return (
