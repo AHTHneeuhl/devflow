@@ -20,6 +20,7 @@ type Comment = {
 export default function TaskDetailsPage() {
   const [task, setTask] = useState<Task | null>(null);
   const [comments, setComments] = useState<Comment[]>([]);
+  const [refreshComments, setRefreshComments] = useState(0);
   const { taskId } = useParams();
   const { token } = useAuthStore();
   const { orgId } = useOrgStore();
@@ -53,9 +54,8 @@ export default function TaskDetailsPage() {
     }
 
     loadComments();
-
     loadTask();
-  }, []);
+  }, [refreshComments]);
 
   if (!task) return <div className="p-6">Loading...</div>;
 
@@ -74,7 +74,7 @@ export default function TaskDetailsPage() {
           ))}
         </div>
 
-        <CommentInput />
+        <CommentInput onCreated={() => setRefreshComments((k) => k + 1)} />
       </div>
     </div>
   );

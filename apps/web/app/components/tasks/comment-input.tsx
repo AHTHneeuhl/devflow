@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation';
 import { useAuthStore } from '@/store/auth-store';
 import { useOrgStore } from '@/store/org-store';
 
-export function CommentInput() {
+export function CommentInput({ onCreated }: { onCreated: () => void }) {
   const [text, setText] = useState('');
   const { taskId } = useParams();
   const { token } = useAuthStore();
@@ -22,6 +22,7 @@ export function CommentInput() {
     });
 
     setText('');
+    onCreated();
   }
 
   return (
