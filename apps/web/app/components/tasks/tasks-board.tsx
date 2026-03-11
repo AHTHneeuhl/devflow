@@ -1,0 +1,21 @@
+import { TaskColumn } from './task-column';
+
+type Task = {
+  id: string;
+  title: string;
+  status: 'todo' | 'in_progress' | 'done';
+};
+
+export function TasksBoard({ tasks }: { tasks: Task[] }) {
+  const todo = tasks.filter((t) => t.status === 'todo');
+  const inProgress = tasks.filter((t) => t.status === 'in_progress');
+  const done = tasks.filter((t) => t.status === 'done');
+
+  return (
+    <div className="grid grid-cols-3 gap-4">
+      <TaskColumn title="Todo" tasks={todo} />
+      <TaskColumn title="In Progress" tasks={inProgress} />
+      <TaskColumn title="Done" tasks={done} />
+    </div>
+  );
+}
