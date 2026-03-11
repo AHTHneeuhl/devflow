@@ -11,19 +11,17 @@ type Project = {
   description?: string;
 };
 
-const tasks: {
+type Task = {
   id: string;
   title: string;
   status: 'todo' | 'in_progress' | 'done';
-}[] = [
-  { id: '1', title: 'Setup project', status: 'todo' },
-  { id: '2', title: 'Create API', status: 'in_progress' },
-  { id: '3', title: 'Deploy app', status: 'done' },
-];
+};
+
 export default function ProjectDetailsPage() {
   const { projectId } = useParams();
   const { token } = useAuthStore();
   const [project, setProject] = useState<Project | null>(null);
+  const [tasks, setTasks] = useState<Task[]>([]);
 
   const orgId = localStorage.getItem('orgId');
 
@@ -41,6 +39,22 @@ export default function ProjectDetailsPage() {
       const data = await res.json();
       setProject(data);
     }
+
+    async function loadTasks() {
+      const res = await fetch(
+        `http://localhost:4000/org/${orgId}/projects/${projectId}/tasks`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      const data = await res.json();
+      setTasks(data.data);
+    }
+
+    loadTasks();
 
     loadProject();
   }, []);
