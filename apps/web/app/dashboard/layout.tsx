@@ -8,6 +8,7 @@ import { useTaskStore } from '@/store/task-store';
 import { useEffect } from 'react';
 import { NotificationBell } from '../components/notifications/notification-bell';
 import { SearchInput } from '../components/search/search-input';
+import { toast } from 'sonner';
 
 export default function DashboardLayout({
   children,
@@ -53,6 +54,7 @@ export default function DashboardLayout({
 
       if (data.type === 'notification_created') {
         addNotification(data.payload);
+        toast(data.payload.title);
       }
     };
   }, [setConnected]);
