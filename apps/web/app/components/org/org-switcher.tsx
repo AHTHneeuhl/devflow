@@ -12,6 +12,7 @@ type Org = {
 export function OrgSwitcher() {
   const { token } = useAuth();
   const [orgs, setOrgs] = useState<Org[]>([]);
+  const [selectedOrg, setSelectedOrg] = useState<string>('');
 
   useEffect(() => {
     fetch('http://localhost:4000/org', {
@@ -24,7 +25,11 @@ export function OrgSwitcher() {
   }, []);
 
   return (
-    <select className="border rounded-md px-3 py-2 w-[200px]">
+    <select
+      value={selectedOrg}
+      onChange={(e) => setSelectedOrg(e.target.value)}
+      className="border rounded-md px-3 py-2 w-[200px]"
+    >
       <option>Select Workspace</option>
 
       {orgs
