@@ -115,9 +115,9 @@ export class SearchService {
     ]);
 
     return {
-      projects,
-      tasks,
-      comments,
+      projects: projects.map((p) => ({ type: 'project', ...p })),
+      tasks: tasks.map((t) => ({ type: 'task', ...t })),
+      comments: comments.map((c) => ({ type: 'comment', ...c })),
     };
   }
 }
