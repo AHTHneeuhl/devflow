@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ActivityLogsService } from 'src/activity-logs/activity-logs.service';
 import { NotificationsService } from 'src/notifications/notifications.service';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { RealtimeGateway } from 'src/realtime/realtime.gateway';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 
@@ -11,6 +12,7 @@ export class TasksService {
     private prisma: PrismaService,
     private activityLogsService: ActivityLogsService,
     private notificationsService: NotificationsService,
+    private realtimeGateway: RealtimeGateway,
   ) {}
 
   async create(projectId: string, userId: string, dto: CreateTaskDto) {
@@ -34,6 +36,8 @@ export class TasksService {
       task.id,
       task.projectId,
     );
+
+    this.realtimeGateway.emit('task.created', task);
 
     return task;
   }
@@ -70,6 +74,8 @@ export class TasksService {
       task.projectId,
     );
 
+    this.realtimeGateway.emit('task.updated', task);
+
     return task;
   }
 
@@ -85,6 +91,8 @@ export class TasksService {
       task.id,
       task.projectId,
     );
+
+    this.realtimeGateway.emit('task.deleted', { taskId });
 
     return task;
   }
