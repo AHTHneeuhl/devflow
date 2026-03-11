@@ -4,12 +4,13 @@ import { useState } from 'react';
 import { useAuth } from '@/context/auth-context';
 
 export function CreateProjectModal({ onClose }: { onClose: () => void }) {
+  const orgId = localStorage.getItem('orgId');
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const { token } = useAuth();
 
   async function createProject() {
-    await fetch('http://localhost:4000/org/1/projects', {
+    await fetch(`http://localhost:4000/org/${orgId}/projects`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

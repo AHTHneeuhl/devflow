@@ -13,9 +13,10 @@ type Project = {
 export function ProjectsGrid({ reloadKey }: { reloadKey: boolean }) {
   const { token } = useAuth();
   const [projects, setProjects] = useState<Project[]>([]);
+  const orgId = localStorage.getItem('orgId');
 
   async function loadProjects() {
-    const res = await fetch('http://localhost:4000/org/1/projects', {
+    const res = await fetch(`http://localhost:4000/org/${orgId}/projects`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
