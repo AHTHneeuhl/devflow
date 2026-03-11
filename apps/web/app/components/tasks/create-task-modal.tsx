@@ -1,9 +1,30 @@
 'use client';
 
 import { useState } from 'react';
+import { useAuthStore } from '@/store/auth-store';
+import { useParams } from 'next/navigation';
 
 export function CreateTaskModal({ onClose }: { onClose: () => void }) {
   const [title, setTitle] = useState('');
+  const { token } = useAuthStore();
+  const { projectId } = useParams();
+  const orgId = localStorage.getItem('orgId');
+
+  async function createTask() {
+    await fetch(
+      `http://localhost:4000/org/${orgId}/projects/${projectId}/tasks`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ title }),
+      },
+    );
+
+    onClose();
+  }
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/40">
@@ -24,7 +45,10 @@ export function CreateTaskModal({ onClose }: { onClose: () => void }) {
           className="w-full border p-2 rounded mb-4"
         />
 
-        <button className="px-4 py-2 bg-blue-600 text-white rounded">
+        <button
+          onClick={createTask}
+          className="px-4 py-2 bg-blue-600 text-white rounded"
+        >
           Create
         </button>
       </div>
