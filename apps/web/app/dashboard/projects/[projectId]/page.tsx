@@ -65,8 +65,11 @@ export default function ProjectDetailsPage() {
     <div className="p-6">
       <h1 className="text-2xl font-semibold">{project.name}</h1>
       <p className="text-gray-500 mt-2">{project.description}</p>
-      <div className="mt-8">
+      <div className="flex items-center justify-between mt-8 mb-4">
         <h2 className="text-xl font-semibold mb-4">Tasks</h2>
+        <button className="px-3 py-2 bg-blue-600 text-white rounded">
+          Add Task
+        </button>
         <TasksBoard tasks={tasks} />
       </div>
     </div>
