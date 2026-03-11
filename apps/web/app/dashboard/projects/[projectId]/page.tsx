@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { useAuthStore } from '@/store/auth-store';
+import { TasksBoard } from '@/app/components/tasks/tasks-board';
 
 type Project = {
   id: string;
@@ -10,6 +11,15 @@ type Project = {
   description?: string;
 };
 
+const tasks: {
+  id: string;
+  title: string;
+  status: 'todo' | 'in_progress' | 'done';
+}[] = [
+  { id: '1', title: 'Setup project', status: 'todo' },
+  { id: '2', title: 'Create API', status: 'in_progress' },
+  { id: '3', title: 'Deploy app', status: 'done' },
+];
 export default function ProjectDetailsPage() {
   const { projectId } = useParams();
   const { token } = useAuthStore();
@@ -43,12 +53,7 @@ export default function ProjectDetailsPage() {
       <p className="text-gray-500 mt-2">{project.description}</p>
       <div className="mt-8">
         <h2 className="text-xl font-semibold mb-4">Tasks</h2>
-
-        <div className="grid grid-cols-3 gap-4">
-          <div className="border rounded p-4">Todo</div>
-          <div className="border rounded p-4">In Progress</div>
-          <div className="border rounded p-4">Done</div>
-        </div>
+        <TasksBoard tasks={tasks} />
       </div>
     </div>
   );
