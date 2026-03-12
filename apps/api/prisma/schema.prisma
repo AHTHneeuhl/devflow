@@ -214,6 +214,14 @@ model Attachment {
   createdAt DateTime @default(now())
 }
 
+model Integration {
+  id          String   @id @default(uuid())
+  provider    String
+  accessToken String
+  userId      String
+  createdAt   DateTime @default(now())
+}
+
 enum Role {
   ADMIN
   MANAGER

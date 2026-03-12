@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
-import { GithubService } from './github/github.service';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { GithubController } from './github/github.controller';
+import { GithubService } from './github/github.service';
 
 @Module({
-  providers: [GithubService],
+  providers: [GithubService, PrismaService],
   controllers: [GithubController],
 })
 export class IntegrationsModule {}
