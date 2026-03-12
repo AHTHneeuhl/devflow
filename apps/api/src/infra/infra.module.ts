@@ -12,12 +12,15 @@ import { redisStore } from 'cache-manager-ioredis-yet';
       ttl: 60,
       isGlobal: true,
     }),
+
     BullModule.forRoot({
       redis: {
         host: process.env.REDIS_HOST,
         port: 6379,
       },
     }),
+
+    BullModule.registerQueue({ name: 'notifications' }, { name: 'webhooks' }),
   ],
 })
 export class InfraModule {}
