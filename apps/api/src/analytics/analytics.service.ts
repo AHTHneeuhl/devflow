@@ -23,4 +23,18 @@ export class AnalyticsService {
       pending,
     };
   }
+
+  async getTaskCompletionRate(projectId: string) {
+    const total = await this.prisma.task.count({
+      where: { projectId },
+    });
+
+    const completed = await this.prisma.task.count({
+      where: { projectId, status: 'DONE' },
+    });
+
+    const rate = total === 0 ? 0 : (completed / total) * 100;
+
+    return { total, completed, rate };
+  }
 }
