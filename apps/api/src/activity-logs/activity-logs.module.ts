@@ -7,5 +7,6 @@ import { ActivityLogsService } from './activity-logs.service';
   imports: [PrismaModule],
   providers: [ActivityLogsService],
   controllers: [ActivityLogsController],
+  exports: [ActivityLogsService],
 })
 export class ActivityLogsModule {}
