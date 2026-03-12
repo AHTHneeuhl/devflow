@@ -1,16 +1,19 @@
 import {
   Controller,
+  Delete,
+  Get,
+  Param,
   Post,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
-  Param,
-  Get,
-  Delete,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { AttachmentsService } from './attachments.service';
 import { diskStorage } from 'multer';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { AttachmentsService } from './attachments.service';
 
+@UseGuards(JwtAuthGuard)
 @Controller('attachments')
 export class AttachmentsController {
   constructor(private readonly attachmentsService: AttachmentsService) {}
