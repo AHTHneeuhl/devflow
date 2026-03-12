@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import * as fs from 'fs';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { RealtimeGateway } from 'src/realtime/realtime.gateway';
 
@@ -38,6 +39,14 @@ export class AttachmentsService {
   }
 
   async deleteAttachment(id: string) {
+    const attachment = await this.prisma.attachment.findUnique({
+      where: { id },
+    });
+
+    if (attachment?.fileUrl) {
+      fs.unlinkSync(attachment.fileUrl);
+    }
+
     return this.prisma.attachment.delete({
       where: { id },
     });
