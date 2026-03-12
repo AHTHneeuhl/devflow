@@ -17,6 +17,7 @@ model User {
   comments      Comment[]
   activityLogs  ActivityLog[]
   notifications Notification[]
+  attachments Attachment[]
 
   memberships UserOrganization[]
 
@@ -85,6 +86,7 @@ model Task {
 
   comments Comment[]
   labels   Label[]
+  attachments Attachment[]
 
   projectId String
   project   Project @relation(fields: [projectId], references: [id])
