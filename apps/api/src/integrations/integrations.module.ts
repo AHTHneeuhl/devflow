@@ -1,13 +1,16 @@
 import { Module } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { RealtimeGateway } from 'src/realtime/realtime.gateway';
+import { PrismaModule } from 'src/prisma/prisma.module';
+
 import { GithubController } from './github/github.controller';
 import { GithubService } from './github/github.service';
-import { SlackService } from './slack/slack.service';
+
+import { RealtimeGateway } from 'src/realtime/realtime.gateway';
 import { SlackController } from './slack/slack.controller';
+import { SlackService } from './slack/slack.service';
 
 @Module({
-  providers: [GithubService, PrismaService, RealtimeGateway, SlackService],
+  imports: [PrismaModule, RealtimeGateway],
   controllers: [GithubController, SlackController],
+  providers: [GithubService, SlackService],
 })
 export class IntegrationsModule {}
