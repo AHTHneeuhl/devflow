@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req } from '@nestjs/common';
 import { GithubService } from './github.service';
 import type { GithubWebhookPayload } from './github.types';
 
@@ -14,5 +14,10 @@ export class GithubController {
   @Post('webhook')
   handleWebhook(@Body() payload: GithubWebhookPayload) {
     return this.githubService.handleWebhook(payload);
+  }
+
+  @Get('status')
+  getGithubIntegration(@Req() req: { user: { id: string } }) {
+    return this.githubService.getGithubIntegration(req.user.id);
   }
 }

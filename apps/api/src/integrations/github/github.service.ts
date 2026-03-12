@@ -52,4 +52,13 @@ export class GithubService {
 
     return { received: true };
   }
+
+  async getGithubIntegration(userId: string) {
+    return this.prisma.integration.findFirst({
+      where: {
+        userId,
+        provider: 'github',
+      },
+    });
+  }
 }
