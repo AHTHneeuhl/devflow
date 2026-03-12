@@ -24,4 +24,10 @@ export class AttachmentsService {
       orderBy: { createdAt: 'desc' },
     });
   }
+
+  async deleteAttachment(id: string) {
+    return this.prisma.attachment.delete({
+      where: { id },
+    });
+  }
 }

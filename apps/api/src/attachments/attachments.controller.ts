@@ -5,6 +5,7 @@ import {
   UseInterceptors,
   Param,
   Get,
+  Delete,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AttachmentsService } from './attachments.service';
@@ -36,5 +37,10 @@ export class AttachmentsController {
   @Get('tasks/:taskId')
   getTaskAttachments(@Param('taskId') taskId: string) {
     return this.attachmentsService.getTaskAttachments(taskId);
+  }
+
+  @Delete(':id')
+  deleteAttachment(@Param('id') id: string) {
+    return this.attachmentsService.deleteAttachment(id);
   }
 }
