@@ -17,4 +17,11 @@ export class AttachmentsService {
       },
     });
   }
+
+  async getTaskAttachments(taskId: string) {
+    return this.prisma.attachment.findMany({
+      where: { taskId },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
 }

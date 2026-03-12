@@ -4,6 +4,7 @@ import {
   UploadedFile,
   UseInterceptors,
   Param,
+  Get,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AttachmentsService } from './attachments.service';
@@ -30,5 +31,10 @@ export class AttachmentsController {
     @UploadedFile() file: Express.Multer.File,
   ) {
     return this.attachmentsService.uploadAttachment(taskId, file);
+  }
+
+  @Get('tasks/:taskId')
+  getTaskAttachments(@Param('taskId') taskId: string) {
+    return this.attachmentsService.getTaskAttachments(taskId);
   }
 }
