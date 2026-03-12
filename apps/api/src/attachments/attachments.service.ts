@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as fs from 'fs';
+import { ActivityLogsService } from 'src/activity-logs/activity-logs.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { RealtimeGateway } from 'src/realtime/realtime.gateway';
 
@@ -8,6 +9,7 @@ export class AttachmentsService {
   constructor(
     private prisma: PrismaService,
     private realtimeGateway: RealtimeGateway,
+    private activityService: ActivityLogsService,
   ) {}
 
   async uploadAttachment(
@@ -27,6 +29,13 @@ export class AttachmentsService {
     });
 
     this.realtimeGateway.server.emit('attachment.created', attachment);
+
+    await this.activityService.logActivity(
+      userId,
+      'ATTACHMENT_ADDED',
+      'TASK',
+      taskId,
+    );
 
     return attachment;
   }
