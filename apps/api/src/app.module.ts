@@ -4,17 +4,18 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
+import { ScheduleModule } from '@nestjs/schedule';
 import { ActivityLogsModule } from './activity-logs/activity-logs.module';
+import { AttachmentsModule } from './attachments/attachments.module';
 import { AuthModule } from './auth/auth.module';
 import { CommentsModule } from './comments/comments.module';
+import { InfraModule } from './infra/infra.module';
+import { IntegrationsModule } from './integrations/integrations.module';
 import { LabelsModule } from './labels/labels.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { ProjectsModule } from './projects/projects.module';
 import { SearchModule } from './search/search.module';
 import { TasksModule } from './tasks/tasks.module';
-import { AttachmentsModule } from './attachments/attachments.module';
-import { IntegrationsModule } from './integrations/integrations.module';
-import { InfraModule } from './infra/infra.module';
 
 @Module({
   imports: [
@@ -26,6 +27,8 @@ import { InfraModule } from './infra/infra.module';
         },
       ],
     }),
+
+    ScheduleModule.forRoot(),
 
     AuthModule,
     PrismaModule,
