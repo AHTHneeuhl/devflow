@@ -47,4 +47,17 @@ export class AnalyticsService {
     ORDER BY date ASC
   `;
   }
+
+  async getUserProductivity(projectId: string) {
+    return this.prisma.task.groupBy({
+      by: ['assigneeId'],
+      where: {
+        projectId,
+        status: 'DONE',
+      },
+      _count: {
+        id: true,
+      },
+    });
+  }
 }
