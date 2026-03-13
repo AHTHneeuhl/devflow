@@ -2,10 +2,10 @@ import { Controller, Get, Res } from '@nestjs/common';
 import {
   HealthCheck,
   HealthCheckService,
-  MicroserviceHealthIndicator,
   PrismaHealthIndicator,
 } from '@nestjs/terminus';
 import type { Response } from 'express';
+import Redis from 'ioredis';
 import { register } from 'prom-client';
 import { PrismaService } from 'src/prisma/prisma.service';
 
@@ -15,7 +15,7 @@ export class ObservabilityController {
     private health: HealthCheckService,
     private prisma: PrismaHealthIndicator,
     private prismaService: PrismaService,
-    private microservice: MicroserviceHealthIndicator,
+    private redis: Redis,
   ) {}
 
   @Get('health')
@@ -23,6 +23,12 @@ export class ObservabilityController {
   check() {
     return this.health.check([
       () => this.prisma.pingCheck('postgres', this.prismaService),
+      async () => ({
+        redis:
+          (await this.redis.ping()) === 'PONG'
+            ? { status: 'up' }
+            : { status: 'down' },
+      }),
     ]);
   }
 
