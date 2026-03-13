@@ -19,6 +19,8 @@ export class SubscriptionMiddleware implements NestMiddleware {
       where: { organizationId: orgId },
     });
 
+    (req as AuthRequest & { subscription?: typeof sub }).subscription = sub;
+
     if (!sub || sub.status !== 'active') {
       throw new ForbiddenException('Active subscription required');
     }
