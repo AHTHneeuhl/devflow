@@ -59,7 +59,7 @@ export default function BillingPage() {
           disabled={loading}
           className="px-4 py-2 bg-black text-white rounded disabled:opacity-50"
         >
-          Upgrade Plan
+          {loading ? 'Processing...' : 'Upgrade Plan'}
         </button>
 
         <button
@@ -67,7 +67,7 @@ export default function BillingPage() {
           disabled={loading}
           className="px-4 py-2 border rounded disabled:opacity-50"
         >
-          Open Billing Portal
+          {loading ? 'Opening...' : 'Open Billing Portal'}
         </button>
       </div>
     </div>
