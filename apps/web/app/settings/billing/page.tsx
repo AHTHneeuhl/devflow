@@ -4,9 +4,11 @@ import { SubscriptionStatus } from '@/app/components/billing/subscription-status
 import { UsageLimits } from '@/app/components/billing/usage-limits';
 import { billingService } from '@/services/billing-service';
 import { useBillingStore } from '@/store/billing-store';
+import { useEffect } from 'react';
 
 export default function BillingPage() {
   const plan = useBillingStore((s) => s.plan);
+  const setPlan = useBillingStore((s) => s.setPlan);
 
   const handleCheckout = async () => {
     const { url } = await billingService.checkout();
@@ -17,6 +19,12 @@ export default function BillingPage() {
     const { url } = await billingService.portal();
     window.location.href = url;
   };
+
+  useEffect(() => {
+    billingService.subscription().then((data) => {
+      setPlan(data.plan);
+    });
+  }, [setPlan]);
 
   return (
     <div className="p-6">
