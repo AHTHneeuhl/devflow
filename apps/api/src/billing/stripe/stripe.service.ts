@@ -29,4 +29,10 @@ export class StripeService {
       cancel_url: 'http://localhost:3000/billing/cancel',
     });
   }
+
+  async createCustomer(email: string) {
+    return this.stripe.customers.create({
+      email,
+    });
+  }
 }
