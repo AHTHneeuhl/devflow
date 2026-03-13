@@ -25,10 +25,17 @@ export default function BillingPage() {
   useEffect(() => {
     setLoading(true);
 
-    billingService.subscription().then((data) => {
-      setPlan(data.plan);
-      setLoading(false);
-    });
+    billingService
+      .subscription()
+      .then((data) => {
+        setPlan(data.plan);
+      })
+      .catch(() => {
+        console.error('Failed to load subscription');
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, [setPlan, setLoading]);
 
   return (
