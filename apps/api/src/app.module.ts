@@ -1,26 +1,27 @@
 import { Module } from '@nestjs/common';
 import { ThrottlerModule } from '@nestjs/throttler';
-import { LoggerModule } from 'nestjs-pino';
-import * as crypto from 'crypto';
 import { PrometheusModule } from '@willsoto/nestjs-prometheus';
+import * as crypto from 'crypto';
+import { LoggerModule } from 'nestjs-pino';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
+import { APP_FILTER } from '@nestjs/core';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ActivityLogsModule } from './activity-logs/activity-logs.module';
 import { AttachmentsModule } from './attachments/attachments.module';
 import { AuthModule } from './auth/auth.module';
 import { CommentsModule } from './comments/comments.module';
+import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 import { InfraModule } from './infra/infra.module';
 import { IntegrationsModule } from './integrations/integrations.module';
 import { LabelsModule } from './labels/labels.module';
+import { ObservabilityModule } from './observability/observability.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { ProjectsModule } from './projects/projects.module';
 import { SearchModule } from './search/search.module';
 import { TasksModule } from './tasks/tasks.module';
-import { APP_FILTER } from '@nestjs/core';
-import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 
 @Module({
   imports: [
@@ -59,6 +60,7 @@ import { HttpExceptionFilter } from './common/filters/http-exception.filter';
     AttachmentsModule,
     IntegrationsModule,
     InfraModule,
+    ObservabilityModule,
   ],
   controllers: [AppController],
   providers: [
