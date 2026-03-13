@@ -1,13 +1,16 @@
 import {
-  ExceptionFilter,
-  Catch,
   ArgumentsHost,
+  Catch,
+  ExceptionFilter,
   HttpException,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
+import { Logger } from 'nestjs-pino';
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
+  constructor(private readonly logger: Logger) {}
+
   catch(exception: unknown, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
 
@@ -16,6 +19,11 @@ export class HttpExceptionFilter implements ExceptionFilter {
 
     const status =
       exception instanceof HttpException ? exception.getStatus() : 500;
+
+    this.logger.error(
+      { exception, path: request.url, method: request.method },
+      'HTTP Exception',
+    );
 
     response.status(status).json({
       statusCode: status,
