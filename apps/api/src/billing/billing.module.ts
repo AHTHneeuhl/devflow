@@ -1,10 +1,15 @@
-import { Module } from '@nestjs/common';
+import { Module, MiddlewareConsumer, NestModule } from '@nestjs/common';
 import { StripeService } from './stripe/stripe.service';
 import { BillingController } from './billing.controller';
+import { SubscriptionMiddleware } from './subscription.middleware';
 
 @Module({
   providers: [StripeService],
-  exports: [StripeService],
   controllers: [BillingController],
+  exports: [StripeService],
 })
-export class BillingModule {}
+export class BillingModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(SubscriptionMiddleware).forRoutes('*');
+  }
+}
