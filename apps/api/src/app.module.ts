@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { LoggerModule } from 'nestjs-pino';
 import * as crypto from 'crypto';
+import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -33,6 +34,8 @@ import { HttpExceptionFilter } from './common/filters/http-exception.filter';
     }),
 
     ScheduleModule.forRoot(),
+
+    PrometheusModule.register(),
 
     LoggerModule.forRoot({
       pinoHttp: {
