@@ -1,10 +1,19 @@
-import { Attachment } from '@/types/attachment';
+'use client';
 
-type Props = {
-  attachments: Attachment[];
-};
+import { useEffect } from 'react';
+import { attachmentService } from '@/services/attachment-service';
+import { useAttachmentStore } from '@/store/attachment-store';
 
-export function AttachmentList({ attachments }: Props) {
+type Props = { taskId: string };
+
+export function AttachmentList({ taskId }: Props) {
+  const attachments = useAttachmentStore((s) => s.attachments);
+  const setAttachments = useAttachmentStore((s) => s.setAttachments);
+
+  useEffect(() => {
+    attachmentService.list(taskId).then(setAttachments);
+  }, [taskId, setAttachments]);
+
   return (
     <div className="space-y-2">
       {attachments.map((a) => (
