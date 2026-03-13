@@ -2,6 +2,7 @@ import { Controller, Get, Res } from '@nestjs/common';
 import {
   HealthCheck,
   HealthCheckService,
+  MicroserviceHealthIndicator,
   PrismaHealthIndicator,
 } from '@nestjs/terminus';
 import type { Response } from 'express';
@@ -14,6 +15,7 @@ export class ObservabilityController {
     private health: HealthCheckService,
     private prisma: PrismaHealthIndicator,
     private prismaService: PrismaService,
+    private microservice: MicroserviceHealthIndicator,
   ) {}
 
   @Get('health')
