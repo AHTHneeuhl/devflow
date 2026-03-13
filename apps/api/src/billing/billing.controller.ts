@@ -22,6 +22,11 @@ export class BillingController {
     return this.stripe.createBillingPortal(body.customerId);
   }
 
+  @Post('cancel')
+  async cancel(@Body() body: { subscriptionId: string }) {
+    return this.stripe.cancelSubscription(body.subscriptionId);
+  }
+
   @Post('webhook')
   async webhook(@Req() req: Request, @Headers('stripe-signature') sig: string) {
     const event = this.stripe.client.webhooks.constructEvent(
