@@ -1,5 +1,6 @@
 'use client';
 
+import { SubscriptionStatus } from '@/app/components/billing/subscription-status';
 import { billingService } from '@/services/billing-service';
 
 export default function BillingPage() {
@@ -18,6 +19,8 @@ export default function BillingPage() {
       <h1 className="text-2xl font-semibold">Billing</h1>
 
       <div className="mt-6 space-y-4">
+        <SubscriptionStatus plan="Free" />
+
         <button
           onClick={handleCheckout}
           className="px-4 py-2 bg-black text-white rounded"
