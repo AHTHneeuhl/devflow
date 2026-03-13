@@ -9,6 +9,8 @@ import { useEffect } from 'react';
 export default function BillingPage() {
   const plan = useBillingStore((s) => s.plan);
   const setPlan = useBillingStore((s) => s.setPlan);
+  const loading = useBillingStore((s) => s.loading);
+  const setLoading = useBillingStore((s) => s.setLoading);
 
   const handleCheckout = async () => {
     const { url } = await billingService.checkout();
@@ -21,14 +23,19 @@ export default function BillingPage() {
   };
 
   useEffect(() => {
+    setLoading(true);
+
     billingService.subscription().then((data) => {
       setPlan(data.plan);
+      setLoading(false);
     });
-  }, [setPlan]);
+  }, [setPlan, setLoading]);
 
   return (
     <div className="p-6">
       <h1 className="text-2xl font-semibold">Billing</h1>
+
+      {loading && <p className="text-sm text-gray-500">Loading billing...</p>}
 
       <div className="mt-6 space-y-4">
         <SubscriptionStatus plan={plan} />
