@@ -14,6 +14,10 @@ export function AttachmentList({ taskId }: Props) {
     attachmentService.list(taskId).then(setAttachments);
   }, [taskId, setAttachments]);
 
+  if (attachments.length === 0) {
+    return <p className="text-sm text-gray-500">No attachments yet</p>;
+  }
+
   return (
     <div className="space-y-2">
       {attachments.map((a) => (
