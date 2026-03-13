@@ -23,6 +23,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { ProjectsModule } from './projects/projects.module';
 import { SearchModule } from './search/search.module';
 import { TasksModule } from './tasks/tasks.module';
+import { BillingModule } from './billing/billing.module';
 
 @Module({
   imports: [
@@ -62,6 +63,7 @@ import { TasksModule } from './tasks/tasks.module';
     IntegrationsModule,
     InfraModule,
     ObservabilityModule,
+    BillingModule,
   ],
   controllers: [AppController],
   providers: [
