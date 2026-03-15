@@ -1,5 +1,6 @@
 'use client';
 
+import { logError } from '@/lib/logger';
 import { Component, ReactNode } from 'react';
 
 type Props = {
@@ -18,7 +19,7 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error) {
-    console.error('UI Error:', error);
+    logError(error, 'ErrorBoundary');
   }
 
   render() {
