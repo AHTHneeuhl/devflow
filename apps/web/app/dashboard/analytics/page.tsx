@@ -1,5 +1,6 @@
 'use client';
 
+import { MetricCard } from '@/app/components/analytics/metric-card';
 import { analyticsService } from '@/services/analytics-service';
 import { useAnalyticsStore } from '@/store/analytics-store';
 import { useEffect } from 'react';
@@ -30,27 +31,22 @@ export default function AnalyticsPage() {
       <h1 className="text-2xl font-semibold">Analytics</h1>
 
       <div className="grid grid-cols-4 gap-4">
-        <div className="border rounded p-4">
-          <p className="text-sm text-gray-500">Total Projects</p>
-          <p className="text-xl font-semibold">{metrics?.totalProjects ?? 0}</p>
-        </div>
+        <MetricCard
+          title="Total Projects"
+          value={metrics?.totalProjects ?? 0}
+        />
 
-        <div className="border rounded p-4">
-          <p className="text-sm text-gray-500">Total Tasks</p>
-          <p className="text-xl font-semibold">{metrics?.totalTasks ?? 0}</p>
-        </div>
+        <MetricCard title="Total Tasks" value={metrics?.totalTasks ?? 0} />
 
-        <div className="border rounded p-4">
-          <p className="text-sm text-gray-500">Completed Tasks</p>
-          <p className="text-xl font-semibold">
-            {metrics?.completedTasks ?? 0}
-          </p>
-        </div>
+        <MetricCard
+          title="Completed Tasks"
+          value={metrics?.completedTasks ?? 0}
+        />
 
-        <div className="border rounded p-4">
-          <p className="text-sm text-gray-500">Active Members</p>
-          <p className="text-xl font-semibold">{metrics?.activeMembers ?? 0}</p>
-        </div>
+        <MetricCard
+          title="Active Members"
+          value={metrics?.activeMembers ?? 0}
+        />
       </div>
     </div>
   );
