@@ -1,24 +1,10 @@
 'use client';
 
-import { getProjects } from '@/services/project-service';
-import { useAuthStore } from '@/store/auth-store';
-import { useOrgStore } from '@/store/org-store';
-import { useQuery } from '@tanstack/react-query';
+import { useProjects } from '@/hooks/use-projects';
 import { ProjectCard } from './project-card';
 
 export function ProjectsGrid() {
-  const { token } = useAuthStore();
-  const { orgId } = useOrgStore();
-
-  const {
-    data: projects,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ['projects', orgId],
-    queryFn: () => getProjects(orgId as string, token as string),
-    enabled: !!orgId && !!token,
-  });
+  const { data: projects, isLoading, error } = useProjects();
 
   if (isLoading) {
     return <div className="mt-6">Loading projects...</div>;
