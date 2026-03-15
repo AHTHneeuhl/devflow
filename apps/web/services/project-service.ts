@@ -1,8 +1,10 @@
 import {
+  createProjectApi,
   fetchProject,
   fetchProjects,
   fetchProjectTasks,
 } from '@/lib/api/projects';
+import { CreateProjectInput } from '@/types/project';
 
 export async function getProject(
   orgId: string,
@@ -24,4 +26,12 @@ export async function getProjectTasks(
 export async function getProjects(orgId: string, token: string) {
   const data = await fetchProjects(orgId, token);
   return data.data;
+}
+
+export async function createProject(
+  orgId: string,
+  token: string,
+  data: CreateProjectInput,
+) {
+  return createProjectApi(orgId, token, data);
 }

@@ -3,31 +3,37 @@
 import { useState } from 'react';
 import { useAuthStore } from '@/store/auth-store';
 import { useOrgStore } from '@/store/org-store';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { createProject } from '@/services/project-service';
 
-export function CreateProjectModal({
-  onClose,
-  onCreated,
-}: {
-  onClose: () => void;
-  onCreated: () => void;
-}) {
-  const { orgId } = useOrgStore();
+export function CreateProjectModal({ onClose }: { onClose: () => void }) {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
+
+  const queryClient = useQueryClient();
   const { token } = useAuthStore();
+  const { orgId } = useOrgStore();
 
-  async function createProject() {
-    await fetch(`http://localhost:4000/org/${orgId}/projects`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ name, description }),
+  const mutation = useMutation({
+    mutationFn: (data: { name: string; description?: string }) =>
+      createProject(orgId!, token!, data),
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['projects'],
+      });
+
+      onClose();
+    },
+  });
+
+  function handleCreate() {
+    if (!orgId || !token) return;
+
+    mutation.mutate({
+      name,
+      description,
     });
-
-    onClose();
-    onCreated();
   }
 
   return (
@@ -58,9 +64,10 @@ export function CreateProjectModal({
 
         <button
           className="px-4 py-2 bg-blue-600 text-white rounded"
-          onClick={createProject}
+          onClick={handleCreate}
+          disabled={mutation.isPending}
         >
-          Create
+          {mutation.isPending ? 'Creating...' : 'Create'}
         </button>
       </div>
     </div>

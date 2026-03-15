@@ -1,5 +1,5 @@
 import { apiFetch } from '@/services/api-client';
-import { Project, ProjectsResponse } from '@/types/project';
+import { CreateProjectInput, Project, ProjectsResponse } from '@/types/project';
 import { TasksResponse } from '@/types/task';
 
 export async function fetchProject(
@@ -34,5 +34,19 @@ export async function fetchProjects(
     headers: {
       Authorization: `Bearer ${token}`,
     },
+  });
+}
+
+export async function createProjectApi(
+  orgId: string,
+  token: string,
+  data: CreateProjectInput,
+) {
+  return apiFetch(`/org/${orgId}/projects`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
   });
 }
