@@ -3,3 +3,7 @@ export type Project = {
   name: string;
   description?: string;
 };
+
+export type ProjectsResponse = {
+  data: Project[];
+};

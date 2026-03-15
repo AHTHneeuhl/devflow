@@ -1,4 +1,8 @@
-import { fetchProject, fetchProjectTasks } from '@/lib/api/projects';
+import {
+  fetchProject,
+  fetchProjects,
+  fetchProjectTasks,
+} from '@/lib/api/projects';
 
 export async function getProject(
   orgId: string,
@@ -14,5 +18,10 @@ export async function getProjectTasks(
   token: string,
 ) {
   const data = await fetchProjectTasks(orgId, projectId, token);
+  return data.data;
+}
+
+export async function getProjects(orgId: string, token: string) {
+  const data = await fetchProjects(orgId, token);
   return data.data;
 }

@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { ProjectCard } from './project-card';
+import { getProjects } from '@/services/project-service';
 import { useAuthStore } from '@/store/auth-store';
 import { useOrgStore } from '@/store/org-store';
+import { useEffect, useState } from 'react';
+import { ProjectCard } from './project-card';
 
 type Project = {
   id: string;
@@ -17,14 +18,8 @@ export function ProjectsGrid({ refreshKey }: { refreshKey: number }) {
   const { orgId } = useOrgStore();
 
   async function loadProjects() {
-    const res = await fetch(`http://localhost:4000/org/${orgId}/projects`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    const data = await res.json();
-    setProjects(data.data);
+    const data = await getProjects(orgId as string, token as string);
+    setProjects(data);
   }
 
   useEffect(() => {
