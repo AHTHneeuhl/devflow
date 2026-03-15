@@ -5,10 +5,11 @@ import { useCommentStore } from '@/store/comment-store';
 import { useNotificationStore } from '@/store/notification-store';
 import { useRealtimeStore } from '@/store/realtime-store';
 import { useTaskStore } from '@/store/task-store';
+import Link from 'next/link';
 import { useEffect } from 'react';
+import { toast } from 'sonner';
 import { NotificationBell } from '../components/notifications/notification-bell';
 import { SearchInput } from '../components/search/search-input';
-import { toast } from 'sonner';
 
 export default function DashboardLayout({
   children,
@@ -62,7 +63,15 @@ export default function DashboardLayout({
   return (
     <div className="min-h-screen flex flex-col">
       <header className="h-14 border-b flex items-center justify-between px-6">
-        <h1 className="font-semibold">DevFlow</h1>
+        <div className="flex items-center gap-6">
+          <h1 className="font-semibold">DevFlow</h1>
+
+          <nav className="flex items-center gap-4 text-sm">
+            <Link href="/dashboard">Dashboard</Link>
+            <Link href="/dashboard/projects">Projects</Link>
+            <Link href="/dashboard/analytics">Analytics</Link>
+          </nav>
+        </div>
 
         <div className="flex items-center gap-4">
           <SearchInput />
