@@ -1,22 +1,30 @@
+'use client';
+
+import { useProjectTasks } from '@/hooks/use-project-tasks';
+import { Task } from '@/types/task';
 import { DragDropContext, DropResult } from '@hello-pangea/dnd';
 import { TaskColumn } from './task-column';
 
-type Task = {
-  id: string;
-  title: string;
-  status: 'todo' | 'in_progress' | 'done';
-};
+export function TasksBoard({ projectId }: { projectId: string }) {
+  const { data: tasks, isLoading, error } = useProjectTasks(projectId);
 
-export function TasksBoard({ tasks }: { tasks: Task[] }) {
-  const todo = tasks.filter((t) => t.status === 'todo');
-  const inProgress = tasks.filter((t) => t.status === 'in_progress');
-  const done = tasks.filter((t) => t.status === 'done');
+  if (isLoading) {
+    return <div className="p-6">Loading tasks...</div>;
+  }
+
+  if (error) {
+    return <div className="p-6 text-red-500">Failed to load tasks</div>;
+  }
+
+  const todo = tasks?.filter((t: Task) => t.status === 'todo') ?? [];
+  const inProgress =
+    tasks?.filter((t: Task) => t.status === 'in_progress') ?? [];
+  const done = tasks?.filter((t: Task) => t.status === 'done') ?? [];
 
   function onDragEnd(result: DropResult) {
     const { source, destination } = result;
 
     if (!destination) return;
-
     if (source.droppableId === destination.droppableId) return;
 
     console.log('Move task', {
