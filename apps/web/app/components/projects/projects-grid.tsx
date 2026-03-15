@@ -3,32 +3,34 @@
 import { getProjects } from '@/services/project-service';
 import { useAuthStore } from '@/store/auth-store';
 import { useOrgStore } from '@/store/org-store';
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { ProjectCard } from './project-card';
 
-type Project = {
-  id: string;
-  name: string;
-  description?: string;
-};
-
-export function ProjectsGrid({ refreshKey }: { refreshKey: number }) {
+export function ProjectsGrid() {
   const { token } = useAuthStore();
-  const [projects, setProjects] = useState<Project[]>([]);
   const { orgId } = useOrgStore();
 
-  async function loadProjects() {
-    const data = await getProjects(orgId as string, token as string);
-    setProjects(data);
+  const {
+    data: projects,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ['projects', orgId],
+    queryFn: () => getProjects(orgId as string, token as string),
+    enabled: !!orgId && !!token,
+  });
+
+  if (isLoading) {
+    return <div className="mt-6">Loading projects...</div>;
   }
 
-  useEffect(() => {
-    loadProjects();
-  }, [refreshKey]);
+  if (error) {
+    return <div className="mt-6 text-red-500">Failed to load projects</div>;
+  }
 
   return (
     <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-      {projects.map((p) => (
+      {projects?.map((p) => (
         <ProjectCard
           key={p.id}
           id={p.id}
