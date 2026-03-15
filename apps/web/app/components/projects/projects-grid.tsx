@@ -1,39 +1,22 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useProjects } from '@/hooks/use-projects';
 import { ProjectCard } from './project-card';
-import { useAuthStore } from '@/store/auth-store';
-import { useOrgStore } from '@/store/org-store';
 
-type Project = {
-  id: string;
-  name: string;
-  description?: string;
-};
+export function ProjectsGrid() {
+  const { data: projects, isLoading, error } = useProjects();
 
-export function ProjectsGrid({ refreshKey }: { refreshKey: number }) {
-  const { token } = useAuthStore();
-  const [projects, setProjects] = useState<Project[]>([]);
-  const { orgId } = useOrgStore();
-
-  async function loadProjects() {
-    const res = await fetch(`http://localhost:4000/org/${orgId}/projects`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    const data = await res.json();
-    setProjects(data.data);
+  if (isLoading) {
+    return <div className="mt-6">Loading projects...</div>;
   }
 
-  useEffect(() => {
-    loadProjects();
-  }, [refreshKey]);
+  if (error) {
+    return <div className="mt-6 text-red-500">Failed to load projects</div>;
+  }
 
   return (
     <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-      {projects.map((p) => (
+      {projects?.map((p) => (
         <ProjectCard
           key={p.id}
           id={p.id}

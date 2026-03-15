@@ -1,14 +1,7 @@
 name: DevFlow CI
 
 on:
-  push:
-    branches:
-      - main
-      - phase/**
-      - feature/**
-  pull_request:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   ci:
